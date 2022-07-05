@@ -5,6 +5,7 @@ body{
   text-align: center;
   color:#0b045f;
 }
+
 .main{
   display: flex;
   max-width: 40%;
@@ -52,6 +53,7 @@ body{
 }
 .formBar{
   margin: 0 auto;
+  margin-top: 5rem;
   padding: 5px;
 }
 .form input{

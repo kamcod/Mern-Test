@@ -1,9 +1,17 @@
-// import { useState } from "react"
+ import { useEffect } from "react";
+import { useState } from "react"
 
 const Dashboard = () =>{
+  const [user, setUser] = useState();
+
+  useEffect(()=>{
+    setUser('Dummy User');
+  }, []);
+
   return(
     <div>
-      Dashboard
+      <h1>Dashboard</h1>
+      <h4>Hello, {user}</h4>
     </div>
   )
 }

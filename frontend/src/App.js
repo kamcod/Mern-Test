@@ -1,11 +1,10 @@
 
-import './App.css';
-import SignUp from './components/register/signup/signup';
+import AppRoutes from './components/Routes/AppRoutes';
 
 function App() {
   return (
     <div>
-      <SignUp />
+      <AppRoutes />
     </div>
   );
 }
