@@ -1,0 +1,46 @@
+
+.title{
+  text-align: center;
+  color:#0b045f;
+}
+.main{
+  display: flex;
+  max-width: 50%;
+  margin: 0 auto;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  border-radius: 8px;
+}
+.main h2{
+  color: #3c449a;
+}
+
+.sidebar{
+  height: 34rem;
+  width: 25%;
+  border-radius: 8px 0 0 8px;
+  background-image: url('https://thumbs.dreamstime.com/b/glowing-smooth-gradient-website-template-banner-header-sidebar-graphic-blurred-blue-abstract-background-neon-pleasant-155830144.jpg');
+}
+.formBar{
+  margin: 0 auto;
+}
+.form input{
+  width: 80%;
+  height: 25px;
+  border: 1px solid #cce5ff;
+  padding: 1px 3px;
+  border-radius: 5px;
+}
+.form input:focus{
+  outline-color: #4da3ff;
+  background-color: #e6f2ff;
+}
+.form button {
+  padding: 12px 30px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    background-color: #4da3ff;
+    font-weight: bold;
+    font-size: medium;
+}
