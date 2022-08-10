@@ -1,4 +1,7 @@
 const mongoose = require('mongoose')
+const {badRequestError} = require('../errors/index');
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const userSchema = new mongoose.Schema({
     name:{
@@ -16,14 +19,37 @@ const userSchema = new mongoose.Schema({
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             'Please provide a valid email',
           ],
-        unique: true,
+        unique: [true, "This account already exists"],
     },
     password:{
         type: String,
         required: [true, "Please provide password"],
-        minLength: 8,
-        unique: true,
+        minLength: [8, "Please enter minimum 8 characters"],
     }
-})
+});
+
+userSchema.pre('save', async function () {
+    const randomBytes = await bcrypt.genSalt(10)
+    this.password = await bcrypt.hash(this.password, randomBytes)
+  })
+
+userSchema.post('save', function(error, doc, next) {
+    if (error.name === 'MongoServerError' && error.code === 11000) {
+        next( new badRequestError("This account already exists"));
+    } 
+    else {
+        next( new badRequestError(error.name));
+    }
+  });
+
+  userSchema.methods.createJWT = function (){
+    return jwt.sign(
+        { userId: this._id, name: this.name },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: process.env.JWT_LIFETIME,
+        }
+      )
+  };
 
 module.exports = mongoose.model('Users', userSchema)

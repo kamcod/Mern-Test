@@ -1,25 +1,21 @@
 
 const User = require('../modal/user') 
+const jwt = require('jsonwebtoken');
 
 const {StatusCodes} = require('http-status-codes')
 const bcrypt = require("bcryptjs");
 
 const testApi = async (req, res) => {
-    console.log("here", req.body);
-    const task = await User.create(req.body);
-res.status(201).json(task);
-
+    res.status(StatusCodes.CREATED).json({message: "testing", body: req.body})
 }
-const signup = async (req, res) =>{
-    const {name, email, password } = req.body;
-
-    const randomBytes = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, randomBytes);
-    
-    const tempUser = {name, email, password: hashedPassword}
-
-    // await User.create({...tempUser})
-    res.status(StatusCodes.CREATED).json({...tempUser})
+const SignUp = async (req, res) =>{
+   const user = await User.create({...req.body})
+    const token = user.createJWT();
+    res.status(StatusCodes.CREATED).json({name: user.name, token})
 }
+const SignIn = async (req, res) =>{
+   const {email, password} = req.body;
+     res.status(StatusCodes.OK).json({...req.body})
+ }
 
-module.exports = {signup, testApi}
+module.exports = {SignUp, SignIn, testApi}
