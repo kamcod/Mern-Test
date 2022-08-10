@@ -51,5 +51,10 @@ userSchema.post('save', function(error, doc, next) {
         }
       )
   };
+  userSchema.methods.matchPassword = async function (candidatePassword){
+     const isMatch = await bcrypt.compare(candidatePassword, this.password)
+     return isMatch
+  };
+
 
 module.exports = mongoose.model('Users', userSchema)
