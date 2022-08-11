@@ -9,7 +9,9 @@ const xss = require('xss-clean')
 // const rateLimiter = require('express-rate-limiter')
 
 const connectDB = require('./db/connect')
-const routes = require('./routes/main')
+const registerRoutes = require('./routes/register')
+const jobsRoutes = require('./routes/jobs')
+const authentication = require('./middlewares/authentication')
 const errorHandler = require('./middlewares/error-handler')
 const notFound = require('./middlewares/not-found')
 
@@ -23,7 +25,8 @@ app.use(cors())
 app.use(helmet())
 app.use(xss())
 
-app.use('/app', routes)
+app.use('/app', registerRoutes)
+app.use('/app', authentication, jobsRoutes)
 app.use(errorHandler)
 app.use(notFound)
 

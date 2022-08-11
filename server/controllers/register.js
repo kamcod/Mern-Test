@@ -6,13 +6,9 @@ const {badRequestError, unAuthenticatedError} = require('../errors/index')
 const {StatusCodes} = require('http-status-codes')
 const bcrypt = require("bcryptjs");
 
-const testApi = async (req, res) => {
-    res.status(StatusCodes.CREATED).json({message: "testing", body: req.body})
-}
 const SignUp = async (req, res) =>{
    const user = await User.create({...req.body})
-    const token = user.createJWT();
-    res.status(StatusCodes.CREATED).json({name: user.name, token})
+    res.status(StatusCodes.CREATED).json({name: user.name})
 }
 const SignIn = async (req, res) =>{
     const { email, password } = req.body
@@ -28,9 +24,8 @@ const SignIn = async (req, res) =>{
     if (!isPasswordCorrect) {
       throw new unAuthenticatedError('Invalid Credentials')
     }
-    // compare password
     const token = user.createJWT()
     res.status(StatusCodes.OK).json({ user: { name: user.name }, token })
  }
 
-module.exports = {SignUp, SignIn, testApi}
+module.exports = {SignUp, SignIn}
