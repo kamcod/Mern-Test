@@ -2,11 +2,11 @@ const express = require('express')
 const router = express.Router()
 
 
-const {getDashboardStats, createPost, editPost} = require('../controllers/jobs')
+const {getDashboardStats, createPost, editPost, deletePost} = require('../controllers/jobs')
 
 
 router.route('/dashboard').post(getDashboardStats)
-router.route('/createPost').post(createPost)
-router.route('/editPost').post(editPost)
+router.route('/post').post(createPost)
+router.route('/post/:id').patch(editPost).delete(deletePost)
 
 module.exports = router

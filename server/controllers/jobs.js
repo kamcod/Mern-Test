@@ -23,15 +23,29 @@ const createPost = async (req, res) => {
 const editPost = async (req, res) => {
     const {
         body: {title, description},
-        query: {id: postId}
+        params: {id: postId}
     } = req;
     if(title === '' || description === ''){
         throw new badRequestError('Title and description can not be empty');    
     }
         const post = await Post.findByIdAndUpdate({_id: postId}, 
             req.body, { new: true, runValidators: true });
-            
+
         res.status(StatusCodes.OK).json({ status: "updated", post})
 };
 
-module.exports = {getDashboardStats, createPost, editPost}; 
+const deletePost = async (req, res) => {
+    const {id: postId} = req.params;
+    const {userId} = req.user;
+    const post = await Post.findByIdAndRemove({
+        _id: postId,
+        createdBy: userId,
+      });
+      res.status(StatusCodes.OK).json({ status: "remove", post})
+    };
+module.exports = {
+    getDashboardStats,
+    createPost,
+    editPost,
+    deletePost
+}; 
