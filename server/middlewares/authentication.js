@@ -10,7 +10,7 @@ const Authentication = (req, res, next) => {
 
         try {
             const payload = jwt.verify(token, process.env.JWT_SECRET);
-            req.userId= payload.userId;
+            req.user= {userId: payload.userId};
             next();
         } catch (error) {
             throw new unAuthenticatedError('Authentication invalid')

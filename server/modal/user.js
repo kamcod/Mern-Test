@@ -57,4 +57,4 @@ userSchema.post('save', function(error, doc, next) {
   };
 
 
-module.exports = mongoose.model('Users', userSchema)
+module.exports = mongoose.model('User', userSchema)
