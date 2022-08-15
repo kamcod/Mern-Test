@@ -13,6 +13,23 @@ const getDashboardStats = async (req, res) => {
     }
 
 };
+const getPost = async (req, res) => {
+    const {id: postId} = req.params;
+    const {userId} = req.user;
+    const post = await Post.findOne({
+        _id: postId,
+        createdBy: userId,
+      });
+      res.status(StatusCodes.OK).json({ post})
+    };
+
+    const getAllPosts = async (req, res) => {
+        const {userId} = req.user;
+        const post = await Post.find({
+            createdBy: userId,
+          }).sort('createdAt');
+          res.status(StatusCodes.OK).json({ post})
+        };
 
 const createPost = async (req, res) => {
     req.body.createdBy = req.user.userId;
@@ -45,6 +62,8 @@ const deletePost = async (req, res) => {
     };
 module.exports = {
     getDashboardStats,
+    getPost,
+    getAllPosts,
     createPost,
     editPost,
     deletePost
