@@ -6,7 +6,7 @@ const app = express()
 const cors = require('cors')
 const helmet = require('helmet')
 const xss = require('xss-clean')
-// const rateLimiter = require('express-rate-limiter')
+const rateLimiter = require('express-rate-limit')
 
 const connectDB = require('./db/connect')
 const registerRoutes = require('./routes/register')
@@ -15,10 +15,12 @@ const authentication = require('./middlewares/authentication')
 const errorHandler = require('./middlewares/error-handler')
 const notFound = require('./middlewares/not-found')
 
-// app.use(rateLimiter({ 
-//     windowMs: 15 * 60 * 1000, // 15 minutes
-//     max: 100, // limit each IP to 100 requests per windowMs
-//   }))
+app.use(
+    rateLimiter({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100, // limit each IP to 100 requests per windowMs
+    })
+  );
   
 app.use(express.json())
 app.use(cors())

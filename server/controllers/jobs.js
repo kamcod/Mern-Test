@@ -4,6 +4,7 @@ const User = require('../modal/user')
 const Post = require('../modal/post');
 
 const getDashboardStats = async (req, res) => {
+      
     const user = await User.findOne({_id: req.user.userId})
     const post = await Post.find({createdBy: req.user.userId})
     if(user){
