@@ -21,7 +21,7 @@ app.use(
       max: 100, // limit each IP to 100 requests per windowMs
     })
   );
-  
+
 app.use(express.json())
 app.use(cors())
 app.use(helmet())
@@ -29,6 +29,7 @@ app.use(xss())
 
 app.use('/app', registerRoutes)
 app.use('/app', authentication, jobsRoutes)
+// app.use('/app', jobsRoutes)
 app.use(errorHandler)
 app.use(notFound)
 

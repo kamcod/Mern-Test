@@ -17,13 +17,13 @@ const Login = () =>{
       <div className={classes.title}>
       <h1> Welcome to The Blog City</h1>
       </div>
-
     <div className={classes.main}>
       <div className={classes.sidebar}>
       </div>
       <div className={classes.formBar}>
+        <h2>Sign In</h2>
       <form className={classes.form}>
-        
+
         <label htmlFor="email">Email: </label> <br />
         <input type="text" id="email" name="email" value={email} onChange={onChangeEmail} />
         <br /> <br />
