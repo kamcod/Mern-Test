@@ -30,6 +30,7 @@ export default function ProtectedRoutes() {
                 })
         } else {
             setIsLoading(false);
+            navigate("/login", { replace: true });
         }
 
 
