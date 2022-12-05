@@ -1,25 +1,38 @@
 import Login from "../components/register/login/Login";
 import React, {useEffect, useState} from "react";
-import {Outlet} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 import axios from "axios";
 
 export default function ProtectedRoutes() {
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const [auth, setAuth] = useState(false);
 
     useEffect(() => {
-        axios.get('http://localhost:5000/app/test')
-            .then(res => {
-                console.log("resss", res);
-                if(res.status === 200){
+        const { authorization } = document.cookie;
+        if(authorization) {
+            axios.get('http://localhost:5000/app/dashboard', {
+                headers: {
+                    'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authorization}`
+                },
+            })
+                .then(res => {
+                    if(res.status === 200){
+                        setIsLoading(false);
+                        setAuth(true);
+                    }
+                })
+                .catch((err) => {
                     setIsLoading(false);
-                    setAuth(true);
-                }
-            })
-            .catch((err) => {
-                setIsLoading(false);
-                console.log("error")
-            })
+                    navigate("/login", { replace: true });
+                    console.log("error")
+                })
+        } else {
+            setIsLoading(false);
+        }
+
+
     }, []);
     return (
         <>
