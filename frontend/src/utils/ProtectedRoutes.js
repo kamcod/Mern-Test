@@ -1,5 +1,6 @@
 import Login from "../components/register/login/Login";
 import React, {useEffect, useState} from "react";
+import AppConfig from "./AppConfig";
 import {Outlet, useNavigate} from "react-router-dom";
 import axios from "axios";
 
@@ -11,7 +12,7 @@ export default function ProtectedRoutes() {
     useEffect(() => {
         const { authorization } = document.cookie;
         if(authorization) {
-            axios.get('http://localhost:5000/app/dashboard', {
+            axios.get(AppConfig.apis.getDashboardStats, {
                 headers: {
                     'Content-Type': 'application/json',
                         'Authorization': `Bearer ${authorization}`
