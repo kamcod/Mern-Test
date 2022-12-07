@@ -10,6 +10,7 @@ export default function ProtectedRoutes() {
     const [auth, setAuth] = useState(false);
 
     useEffect(() => {
+        console.log("inprotected routes component")
         const { authorization } = document.cookie;
         if(authorization) {
             axios.get(AppConfig.apis.getDashboardStats, {
@@ -33,9 +34,7 @@ export default function ProtectedRoutes() {
             setIsLoading(false);
             navigate("/login", { replace: true });
         }
-
-
-    }, []);
+    }, [navigate]);
     return (
         <>
             {isLoading && <p>Loading..........</p>}
