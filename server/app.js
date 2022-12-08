@@ -28,8 +28,8 @@ app.use(helmet())
 app.use(xss())
 
 app.use('/app', registerRoutes)
-// app.use('/app', authentication, jobsRoutes)
-app.use('/app', jobsRoutes)
+app.use('/app', authentication, jobsRoutes)
+// app.use('/app', jobsRoutes)
 app.use(errorHandler)
 app.use(notFound)
 
@@ -39,7 +39,7 @@ const start = async () =>{
     await connectDB(process.env.MONGO_URI)
     console.log("DB is connected!")
     app.listen(port, () => {
-        console.log(`server is listening at http://localhost:${port}`)
+        console.log(` server is listening at http://localhost:${port}`)
     })
 }
 

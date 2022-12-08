@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
  import classes from "./Login.module.css";
+import axios from "axios";
+import AppConfig from "../../../utils/AppConfig";
 
 const Login = () =>{
+  const navigate = useNavigate();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
@@ -11,6 +14,19 @@ const Login = () =>{
   }
   const onChangePasswd = (e) => {
     setPassword(e.target.value)
+  }
+  const loginUser = (e) => {
+    e.preventDefault();
+    axios.post(AppConfig.apis.loginUser, {
+      email,
+      password
+    })
+        .then(res => {
+          if(res.status === 200) {
+            document.cookie =`token=${res.data.token}`;
+            navigate("/dashboard", { replace: true });
+          }
+        })
   }
   return(
     <div>
@@ -22,7 +38,7 @@ const Login = () =>{
       </div>
       <div className={classes.formBar}>
         <h2>Sign In</h2>
-      <form className={classes.form}>
+      <form className={classes.form} onSubmit={loginUser}>
 
         <label htmlFor="email">Email: </label> <br />
         <input type="text" id="email" name="email" value={email} onChange={onChangeEmail} />

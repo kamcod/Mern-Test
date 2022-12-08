@@ -1,6 +1,7 @@
 import Login from "../components/register/login/Login";
 import React, {useEffect, useState} from "react";
 import AppConfig from "./AppConfig";
+import GetCookieByName from "./GetCookieByName";
 import {Outlet, useNavigate} from "react-router-dom";
 import axios from "axios";
 
@@ -11,12 +12,12 @@ export default function ProtectedRoutes() {
 
     useEffect(() => {
         console.log("inprotected routes component")
-        const { authorization } = document.cookie;
-        if(authorization) {
+        const token = GetCookieByName('token');
+        if(token) {
             axios.get(AppConfig.apis.getDashboardStats, {
                 headers: {
                     'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authorization}`
+                    'Authorization': `Bearer ${token}`
                 },
             })
                 .then(res => {

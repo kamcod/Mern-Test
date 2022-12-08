@@ -4,7 +4,9 @@ const AppConfig = {
     appUrl: 'http://localhost:3000',
 
     apis: {
-        getDashboardStats: `${apiUrl}/dashboard`
+        getDashboardStats: `${apiUrl}/dashboard`,
+        registerUser: `${apiUrl}/register`,
+        loginUser: `${apiUrl}/login`,
     }
 };
 export default AppConfig;
