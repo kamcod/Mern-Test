@@ -13,10 +13,7 @@ const getDashboardStats = async (req, res) => {
     }
 
 };
-const test = async (req, res) => {
-    const post = {name: 'dummy', id: 147, text: "awesome statement is a text here"};
-        res.status(StatusCodes.OK).json( post)
-};
+
 const getPost = async (req, res) => {
     const {id: postId} = req.params;
     const {userId} = req.user;
@@ -65,7 +62,6 @@ const deletePost = async (req, res) => {
       res.status(StatusCodes.OK).json({ status: "remove", post})
     };
 module.exports = {
-    test,
     getDashboardStats,
     getPost,
     getAllPosts,

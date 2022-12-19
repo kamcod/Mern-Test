@@ -11,15 +11,9 @@ export default function ProtectedRoutes() {
     const [auth, setAuth] = useState(false);
 
     useEffect(() => {
-        console.log("inprotected routes component")
+        console.log("in protected routes component")
         const token = GetCookieByName('token');
-        if(token) {
-            axios.get(AppConfig.apis.getDashboardStats, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-            })
+            axios.get(AppConfig.apis.getDashboardStats)
                 .then(res => {
                     if(res.status === 200){
                         setIsLoading(false);
@@ -29,12 +23,8 @@ export default function ProtectedRoutes() {
                 .catch((err) => {
                     setIsLoading(false);
                     navigate("/login", { replace: true });
-                    console.log("error")
+                    console.log("error", err);
                 })
-        } else {
-            setIsLoading(false);
-            navigate("/login", { replace: true });
-        }
     }, [navigate]);
     return (
         <>

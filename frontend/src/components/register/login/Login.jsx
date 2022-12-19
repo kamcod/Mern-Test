@@ -17,15 +17,18 @@ const Login = () =>{
   }
   const loginUser = (e) => {
     e.preventDefault();
+      axios.defaults.withCredentials = true;
     axios.post(AppConfig.apis.loginUser, {
       email,
       password
     })
         .then(res => {
           if(res.status === 200) {
-            document.cookie =`token=${res.data.token}`;
             navigate("/dashboard", { replace: true });
           }
+        })
+        .catch(err => {
+          console.log("error", err);
         })
   }
   return(

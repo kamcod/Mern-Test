@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { dashboardActions } from "../../store/dashboardSlice";
 import { useNavigate } from 'react-router-dom';
  import AppConfig from "../../utils/AppConfig";
- import GetCookieByName from "../../utils/GetCookieByName";
   import axios from 'axios';
 
 const Dashboard = () =>{
@@ -15,17 +14,20 @@ const Dashboard = () =>{
 
   const logout = () => {
       console.log("logout function pending")
+      axios.delete(AppConfig.apis.logoutUser)
+          .then(res => {
+              if(res.status === 200){
+                  console.log("logout user successfully")
+                  navigate("/login", { replace: true });
+              }
+          })
+          .catch((err) => {
+              console.log("error")
+          })
   }
 
   useEffect(() => {
-    const token = GetCookieByName('token');
-    if(token) {
-      axios.get(AppConfig.apis.getDashboardStats, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-      })
+      axios.get(AppConfig.apis.getDashboardStats)
           .then(res => {
             if(res.status === 200){
               setIsLoading(false);
@@ -36,10 +38,6 @@ const Dashboard = () =>{
             setIsLoading(false);
             console.log("error")
           })
-    } else {
-      setIsLoading(false);
-      setUser("username is not found in database")
-    }
   }, []);
 
   return(

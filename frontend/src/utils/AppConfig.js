@@ -7,6 +7,7 @@ const AppConfig = {
         getDashboardStats: `${apiUrl}/dashboard`,
         registerUser: `${apiUrl}/register`,
         loginUser: `${apiUrl}/login`,
+        logoutUser: `${apiUrl}/logout`,
     }
 };
 export default AppConfig;

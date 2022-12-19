@@ -1,4 +1,4 @@
- import { useState } from "react";
+ import {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
  import classes from "./SignUp.module.css";
  import AppConfig from "../../../utils/AppConfig";
@@ -9,7 +9,14 @@ const SignUp = () =>{
   const [username, setUsername] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-
+ useEffect(() => {
+     axios.get('http://localhost:5000/app/test', {
+             withCredentials: true,
+             })
+         .then(res => {
+             console.log("res test", res);
+         })
+ }, [])
   const onChangeUsername = (e) => {
     setUsername(e.target.value)
   }
@@ -32,6 +39,7 @@ const SignUp = () =>{
             }
         })
   }
+
   return(
     <div>
       <div className={classes.title}>

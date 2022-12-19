@@ -7,6 +7,7 @@ const cors = require('cors')
 const helmet = require('helmet')
 const xss = require('xss-clean')
 const rateLimiter = require('express-rate-limit')
+const cookieParser = require('cookie-parser');
 
 const connectDB = require('./db/connect')
 const registerRoutes = require('./routes/register')
@@ -22,11 +23,12 @@ app.use(
     })
   );
 
-app.use(express.json())
-app.use(cors())
-app.use(helmet())
-app.use(xss())
 
+app.use(express.json())
+app.use(cookieParser());
+app.use(xss())
+app.use(cors({ credentials: true, origin: process.env.frontend_domain }))
+app.use(helmet())
 app.use('/app', registerRoutes)
 app.use('/app', authentication, jobsRoutes)
 // app.use('/app', jobsRoutes)
