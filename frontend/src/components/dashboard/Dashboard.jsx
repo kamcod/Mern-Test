@@ -27,6 +27,7 @@ const Dashboard = () =>{
   }
 
   useEffect(() => {
+      axios.defaults.withCredentials = true;
       axios.get(AppConfig.apis.getDashboardStats)
           .then(res => {
             if(res.status === 200){

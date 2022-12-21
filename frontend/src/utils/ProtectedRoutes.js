@@ -1,7 +1,6 @@
 import Login from "../components/register/login/Login";
 import React, {useEffect, useState} from "react";
 import AppConfig from "./AppConfig";
-import GetCookieByName from "./GetCookieByName";
 import {Outlet, useNavigate} from "react-router-dom";
 import axios from "axios";
 
@@ -12,7 +11,7 @@ export default function ProtectedRoutes() {
 
     useEffect(() => {
         console.log("in protected routes component")
-        const token = GetCookieByName('token');
+        axios.defaults.withCredentials = true;
             axios.get(AppConfig.apis.getDashboardStats)
                 .then(res => {
                     if(res.status === 200){
