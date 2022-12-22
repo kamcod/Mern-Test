@@ -13,11 +13,9 @@ const Dashboard = () =>{
   const [isLoading, setIsLoading] = useState(true);
 
   const logout = () => {
-      console.log("logout function pending")
       axios.delete(AppConfig.apis.logoutUser)
           .then(res => {
               if(res.status === 200){
-                  console.log("logout user successfully")
                   navigate("/login", { replace: true });
               }
           })

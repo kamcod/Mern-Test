@@ -8,13 +8,24 @@ const helmet = require('helmet')
 const xss = require('xss-clean')
 const rateLimiter = require('express-rate-limit')
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 const connectDB = require('./db/connect')
 const registerRoutes = require('./routes/register')
 const jobsRoutes = require('./routes/jobs')
 const authentication = require('./middlewares/authentication')
+
+
+
+
+
+
 const errorHandler = require('./middlewares/error-handler')
 const notFound = require('./middlewares/not-found')
+
+
 
 app.use(
     rateLimiter({
@@ -25,12 +36,52 @@ app.use(
 
 
 app.use(express.json())
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json());
+
+
 app.use(cookieParser());
 app.use(xss())
 app.use(cors({ credentials: true, origin: process.env.frontend_domain }))
 app.use(helmet())
 app.use('/app', registerRoutes)
 app.use('/app', authentication, jobsRoutes)
+
+app.post('/app/payment', async  (req, res) => {
+    console.log("in payment endpoint", req.body)
+    const totalAmmount = req.body.amount;
+
+    stripe.customers.create({
+        email: req.body.email,
+        source: req.body.id,
+        name: 'M Kamran',
+        address: {
+            line1: "abc street",
+            postal_code: '11092',
+            city: 'new york',
+            state: 'new york',
+            country: 'United State'
+        }
+    })
+        .then((customer) => {
+            console.log("then return customer id ", customer.id)
+            return stripe.charges.create({
+                amount: '107',
+                description: "Mern stack payment method",
+                currency: 'USD',
+                customer: customer.id
+            })
+        })
+        .then((charge) => {
+            console.log("then success", charge)
+            res.send("success payment")
+        })
+        .catch(err => {
+            console.log("errr", err);
+            res.send(err)
+        })
+})
+
 // app.use('/app', jobsRoutes)
 app.use(errorHandler)
 app.use(notFound)
