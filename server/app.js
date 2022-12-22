@@ -47,41 +47,6 @@ app.use(helmet())
 app.use('/app', registerRoutes)
 app.use('/app', authentication, jobsRoutes)
 
-app.post('/app/payment', async  (req, res) => {
-    console.log("in payment endpoint", req.body)
-    const totalAmmount = req.body.amount;
-
-    stripe.customers.create({
-        email: req.body.email,
-        source: req.body.id,
-        name: 'M Kamran',
-        address: {
-            line1: "abc street",
-            postal_code: '11092',
-            city: 'new york',
-            state: 'new york',
-            country: 'United State'
-        }
-    })
-        .then((customer) => {
-            console.log("then return customer id ", customer.id)
-            return stripe.charges.create({
-                amount: '107',
-                description: "Mern stack payment method",
-                currency: 'USD',
-                customer: customer.id
-            })
-        })
-        .then((charge) => {
-            console.log("then success", charge)
-            res.send("success payment")
-        })
-        .catch(err => {
-            console.log("errr", err);
-            res.send(err)
-        })
-})
-
 // app.use('/app', jobsRoutes)
 app.use(errorHandler)
 app.use(notFound)
