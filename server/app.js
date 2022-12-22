@@ -10,16 +10,10 @@ const rateLimiter = require('express-rate-limit')
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
-
 const connectDB = require('./db/connect')
 const registerRoutes = require('./routes/register')
 const jobsRoutes = require('./routes/jobs')
 const authentication = require('./middlewares/authentication')
-
-
-
-
 
 
 const errorHandler = require('./middlewares/error-handler')

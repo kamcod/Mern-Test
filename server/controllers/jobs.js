@@ -2,6 +2,7 @@ const {badRequestError} = require('../errors/index');
 const {StatusCodes} = require('http-status-codes')
 const User = require('../modal/user')
 const Post = require('../modal/post');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 const getDashboardStats = async (req, res) => {
     const user = await User.findOne({_id: req.user.userId})
@@ -78,7 +79,6 @@ const payment = async (req, res) => {
         }
     })
         .then((customer) => {
-            console.log("then return customer id ", customer.id)
             return stripe.charges.create({
                 amount: '107',
                 description: "Mern stack payment method",
@@ -87,7 +87,6 @@ const payment = async (req, res) => {
             })
         })
         .then((charge) => {
-            console.log("then success", charge)
             res.send("success payment")
         })
         .catch(err => {
