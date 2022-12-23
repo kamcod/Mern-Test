@@ -8,7 +8,8 @@ const AppConfig = {
         registerUser: `${apiUrl}/register`,
         loginUser: `${apiUrl}/login`,
         logoutUser: `${apiUrl}/logout`,
-        payment: `${apiUrl}/payment`
+        payment: `${apiUrl}/payment`,
+        subscriptionPayment: `${apiUrl}/subscriptionPayment`
     }
 };
 export default AppConfig;

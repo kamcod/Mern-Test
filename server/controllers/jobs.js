@@ -63,7 +63,6 @@ const deletePost = async (req, res) => {
       res.status(StatusCodes.OK).json({ status: "remove", post})
     };
 const payment = async (req, res) => {
-    console.log("in payment endpoint", req.body)
     const totalAmmount = req.body.amount;
 
     stripe.customers.create({
@@ -94,6 +93,56 @@ const payment = async (req, res) => {
             res.send(err)
         })
 };
+
+const subscription = async (req, res) => {
+    //console.log("in payment subscription endpoint", req.body)
+    const {email} = req.body;
+
+    try {
+        // create customer
+        const customer = await stripe.customers.create({
+            email,
+            source: req.body.id
+        });
+
+        // create product if not set up in stripe app dashboard
+        const product = await stripe.products.create({
+            name: 'test product'
+        });
+        return;
+
+        // create subscription
+        const subscription = await stripe.subscriptions.create({
+            customer: customer.id,
+            items: [
+                {
+                    price_data: {
+                        currency: "USD",
+                        product: product.id,
+                        unit_amount: "500",
+                        recurring: {
+                            interval: "month"
+                        }
+                    }
+                }
+            ],
+            payment_settings: {
+                payment_method_types: ["card"],
+                save_default_payment_method: "on_subscription",
+            },
+            expand: ["latest_invoice.payment_intent"]
+        });
+        res.json({
+            message: "Subscription Successfull",
+            clientSecret: subscription.latest_invoice.payment_intent.client_secret,
+            subscriptionId: subscription.id,
+        })
+    }
+    catch (err) {
+        console.log("errorr", err);
+    }
+}
+
 module.exports = {
     getDashboardStats,
     getPost,
@@ -101,5 +150,6 @@ module.exports = {
     createPost,
     editPost,
     deletePost,
-    payment
+    payment,
+    subscription
 };
