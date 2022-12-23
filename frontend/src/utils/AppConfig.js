@@ -4,10 +4,11 @@ const AppConfig = {
     appUrl: 'http://localhost:3000',
 
     apis: {
-        getDashboardStats: `${apiUrl}/dashboard`,
         registerUser: `${apiUrl}/register`,
         loginUser: `${apiUrl}/login`,
         logoutUser: `${apiUrl}/logout`,
+        getDashboardStats: `${apiUrl}/dashboard`,
+        posts: `${apiUrl}/post`,
         payment: `${apiUrl}/payment`,
         subscriptionPayment: `${apiUrl}/subscriptionPayment`
     }

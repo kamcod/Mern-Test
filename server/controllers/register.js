@@ -40,6 +40,7 @@ const SignIn = async (req, res) =>{
  }
 
  const Logout = async (req, res) => {
+    console.log("hereee")
      res.clearCookie("token");
      res.status(200).json({ logout: "logout ss" })
  }
