@@ -16,7 +16,7 @@ const SignUp = async (req, res) =>{
     res.status(StatusCodes.CREATED).json({name: user.name})
 }
 const SignIn = async (req, res) =>{
-    const { email, password } = req.body
+  const { email, password } = req.body
 
     if (!email || !password) {
       throw new badRequestError('Please provide email and password')
@@ -36,7 +36,7 @@ const SignIn = async (req, res) =>{
 
     const token = user.createJWT()
     res.cookie("token", token, { httpOnly: true, secure: false })
-    res.status(200).json({ user: { name: user.name }, token })
+    res.status(200).json({ user: { name: user.name } })
  }
 
  const Logout = async (req, res) => {

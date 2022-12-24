@@ -14,6 +14,10 @@ const Dashboard = () =>{
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [posts, setPosts] = useState([])
+  const [editBox, setEditBox] = useState(false);
+  const [editPostId, setEditPostId] = useState('');
+  const [editPostTitle, setEditPostTitle] = useState('');
+  const [editPostDes, setEditPostDes] = useState('');
 
     const getAllPosts = () => {
         axios.get(AppConfig.apis.posts)
@@ -52,6 +56,41 @@ const Dashboard = () =>{
           .catch((err) => {
               console.log("error")
           })
+  }
+
+  const deletePost = (id) => {
+    axios.delete(`${AppConfig.apis.posts}/${id}`)
+      .then(res => {
+          if(res.status === 200){
+              getAllPosts();
+          }
+      })
+      .catch((err) => {
+          console.log("error")
+      })
+  }
+
+  const editPost = (id, title, des) => {
+    setEditBox(true);
+    setEditPostId(id);
+    setEditPostTitle(title);
+    setEditPostDes(des);
+  }
+
+  const savePost = () => {
+    axios.patch(`${AppConfig.apis.posts}/${editPostId}`, {
+      title: editPostTitle,
+      description: editPostDes
+    })
+      .then(res => {
+          if(res.status === 200){
+              getAllPosts();
+              setEditBox(false);
+          }
+      })
+      .catch((err) => {
+          console.log("error")
+      })
   }
 
   useEffect(() => {
@@ -93,16 +132,34 @@ const Dashboard = () =>{
           <br />
           <h2> Your Posts </h2>
 
-          {posts?.map(post => {
+
+
+
+          {posts?.map((post, index) => {
               return(
                   <>
-                      <div><b>{post.title}</b></div>
+                      <div>
+                        <b>{`${index + 1} - ${post.title}   `}</b> 
+                        <button onClick={() => deletePost(post._id)}>Delete</button>
+                        <button onClick={() => editPost(post._id, post.title, post.description)}>Edit</button>
+                      </div>
                       <div>{post.description}</div>
                       <hr width="90%" />
                   </>
                   )
 
           })}
+          {editBox && 
+          <div style={{border: "1px dotted green", borderRadius: "8px", padding: "30px", margin: "20px 0"}}>
+            <b>Edit Post</b> <br />
+            title:
+            <input type="text" value={editPostTitle} onChange={(e)=>setEditPostTitle(e.target.value)} />
+            <br />
+            Description: <textarea rows="4" cols="40" value={editPostDes} onChange={(e)=>setEditPostDes(e.target.value)} ></textarea>
+            <br />
+            <button onClick={savePost}>Save</button>
+            <button onClick={()=> setEditBox(false)}>Cancel</button>
+          </div>}
 
 
 

@@ -9,14 +9,7 @@ const SignUp = () =>{
   const [username, setUsername] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
- useEffect(() => {
-     axios.get('http://localhost:5000/app/test', {
-             withCredentials: true,
-             })
-         .then(res => {
-             console.log("res test", res);
-         })
- }, [])
+
   const onChangeUsername = (e) => {
     setUsername(e.target.value)
   }
@@ -37,6 +30,9 @@ const SignUp = () =>{
             if(res.status === 201) {
               navigate("/login", { replace: true });
             }
+        })
+        .catch (err => {
+          console.log("error", err);
         })
   }
 
