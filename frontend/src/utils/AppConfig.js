@@ -4,7 +4,9 @@ const AppConfig = {
     appUrl: 'http://localhost:3000',
 
     apis: {
-        adminLogin: `${apiUrl}/adminLogin`,
+        adminLogin: `${apiUrl}/admin/login`,
+        logoutAdmin: `${apiUrl}/admin/logout`,
+        getAllUsers: `${apiUrl}/admin/getAllUsers`,
         registerUser: `${apiUrl}/register`,
         loginUser: `${apiUrl}/login`,
         logoutUser: `${apiUrl}/logout`,

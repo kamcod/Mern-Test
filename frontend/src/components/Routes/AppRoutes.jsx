@@ -6,9 +6,9 @@ import Upgrade from "../upgrade/Upgrade";
 import ProtectedRoutes from "../../utils/ProtectedRoutes";
 import AdminLogin from "../admin/AdminLogin";
 import AdminDashboard from "../admin/AdminDashboard";
+import ProtectAdminRoutes from "../../utils/ProtectAdminRoutes";
 
 export default function AppRoutes () {
-  // TODO: set Admin Panel
   return(
     <Routes>
         <Route path="/" element={<ProtectedRoutes />}>
@@ -17,9 +17,11 @@ export default function AppRoutes () {
             <Route path="/upgrade" element={<Upgrade />} />
         </Route>
 
-{/*  //  TODO: set Admin Panel */}
-        <Route path="/admin" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin" element={<ProtectAdminRoutes />}>
+           <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        </Route>
+        <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/register" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
 

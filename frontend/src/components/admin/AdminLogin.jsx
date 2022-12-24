@@ -50,6 +50,9 @@ const AdminLogin = () =>{
         <input type="password" id="passwd" name="password" value={password} onChange={onChangePasswd} />
         <br /> <br />
         <button type="submit"> Login </button>
+        {/* credentials:
+        email: admin@blogcity.com
+        password: Admin@123 */}
       </form>
       </div>
     </div>

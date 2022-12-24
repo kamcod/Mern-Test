@@ -22,7 +22,7 @@ const SignIn = async (req, res) =>{
       throw new badRequestError('Please provide email and password')
     }
     const user = await User.findOne({ email })
-    if (!user) {
+    if (!user || user.isAdmin) {
       throw new unAuthenticatedError('Invalid Credentials')
     }
     const isPasswordCorrect = await user.matchPassword(password)
@@ -40,9 +40,36 @@ const SignIn = async (req, res) =>{
  }
 
  const Logout = async (req, res) => {
-    console.log("hereee")
      res.clearCookie("token");
-     res.status(200).json({ logout: "logout ss" })
+     res.status(200).json({ logout: "logout successfull" })
  }
+ const adminLogin = async (req, res) => {
+  const { email, password } = req.body
 
-module.exports = {SignUp, SignIn, Logout}
+    if (!email || !password) {
+      throw new badRequestError('Please provide email and password')
+    }
+    const user = await User.findOne({ email })
+    if (!user || !user.isAdmin) {
+      throw new unAuthenticatedError('Invalid Credentials')
+    }
+    const isPasswordCorrect = await user.matchPassword(password)
+
+    if (!isPasswordCorrect) {
+      throw new unAuthenticatedError('Invalid Credentials')
+    }
+    // if (!user.isVerified) {
+    //     throw new unAuthenticatedError('Please verify your email');
+    // }
+
+    const token = user.createJWT()
+    res.cookie("token", token, { httpOnly: true, secure: false })
+    res.status(200).json({ user: { name: user.name } })
+};
+
+const adminLogout = async (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ logout: "logout successfull" })
+}
+
+module.exports = {SignUp, SignIn, Logout, adminLogin, adminLogout}

@@ -13,6 +13,7 @@ const bodyParser = require('body-parser');
 const connectDB = require('./db/connect')
 const registerRoutes = require('./routes/register')
 const jobsRoutes = require('./routes/jobs')
+const adminRoutes = require('./routes/admin')
 const authentication = require('./middlewares/authentication')
 
 
@@ -39,6 +40,7 @@ app.use(xss())
 app.use(cors({ credentials: true, origin: process.env.frontend_domain }))
 app.use(helmet())
 app.use('/app', registerRoutes)
+app.use('/app/admin', authentication, adminRoutes)
 app.use('/app', authentication, jobsRoutes)
 
 // app.use('/app', jobsRoutes)
