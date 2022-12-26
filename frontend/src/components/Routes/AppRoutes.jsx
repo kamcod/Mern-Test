@@ -7,7 +7,7 @@ import ProtectedRoutes from "../../utils/ProtectedRoutes";
 import AdminLogin from "../admin/AdminLogin";
 import AdminDashboard from "../admin/AdminDashboard";
 import ProtectAdminRoutes from "../../utils/ProtectAdminRoutes";
-
+import ChatRoom from "../chat/ChatRoom";
 export default function AppRoutes () {
   return(
     <Routes>
@@ -22,6 +22,7 @@ export default function AppRoutes () {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Route>
         <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/chatroom" element={<ChatRoom />} />
       <Route path="/register" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
 

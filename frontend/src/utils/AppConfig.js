@@ -1,4 +1,6 @@
 const apiUrl = 'http://localhost:5000/app';
+export const serverUrl = 'http://localhost:5000';
+
 
 const AppConfig = {
     appUrl: 'http://localhost:3000',

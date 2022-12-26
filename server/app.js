@@ -1,7 +1,10 @@
 require('dotenv').config()
 require('express-async-errors');
 const express = require('express')
+const http = require('http');
 const app = express()
+const server = http.createServer(app);
+const {Server} = require('socket.io');
 
 const cors = require('cors')
 const helmet = require('helmet')
@@ -9,6 +12,7 @@ const xss = require('xss-clean')
 const rateLimiter = require('express-rate-limit')
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+
 
 const connectDB = require('./db/connect')
 const registerRoutes = require('./routes/register')
@@ -20,7 +24,23 @@ const authentication = require('./middlewares/authentication')
 const errorHandler = require('./middlewares/error-handler')
 const notFound = require('./middlewares/not-found')
 
+const io = new Server(server, {
+    cors: {
+        origin: process.env.frontend_domain,
+        methods: ["GET", "POST"]
+    }
+});
 
+io.on("connection", (socket) => {
+    console.log("socket connected")
+    socket.on("join_room", (room) => {
+        socket.join(room);
+    })
+    socket.on("send_message", (data) => {
+        // socket.broadcast.emit("receive_message", {message: `your message has been received: > " ${data.message} "`})
+        socket.to(data.room).emit("receive_message", data);
+    })
+});
 
 app.use(
     rateLimiter({
@@ -52,7 +72,7 @@ const port = process.env.PORT || 5000;
 const start = async () =>{
     await connectDB(process.env.MONGO_URI)
     console.log("DB is connected!")
-    app.listen(port, () => {
+    server.listen(port, () => {
         console.log(` server is listening at http://localhost:${port}`)
     })
 }
